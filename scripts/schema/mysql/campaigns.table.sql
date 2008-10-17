@@ -4,5 +4,6 @@ CREATE TABLE `tablegeeks`.`campaigns` (
   `created` DATETIME NOT NULL COMMENT 'std. field',
   PRIMARY KEY (`id`)
 )
+ENGINE = InnoDB
 CHARACTER SET utf8
 COMMENT = 'gaming campaigns';

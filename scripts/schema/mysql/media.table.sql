@@ -7,5 +7,6 @@ CREATE TABLE `tablegeeks`.`media` (
   `created` DATETIME NOT NULL,
   PRIMARY KEY (`id`)
 )
+ENGINE = InnoDB
 CHARACTER SET utf8
 COMMENT = 'media files';

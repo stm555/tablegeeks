@@ -4,5 +4,6 @@ CREATE TABLE `tablegeeks`.`tags` (
   `created` DATETIME COMMENT 'std. field',
   PRIMARY KEY (`id`)
 )
+ENGINE = InnoDB
 CHARACTER SET utf8
 COMMENT = 'keywords / tags';
