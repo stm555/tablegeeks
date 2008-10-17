@@ -6,7 +6,7 @@ CREATE TABLE `tablegeeks`.`sessions` (
   `campaign` INT UNSIGNED NOT NULL COMMENT 'fk to campaigns',
   `author` INT UNSIGNED NOT NULL COMMENT 'fk to users',
   `media` INT UNSIGNED COMMENT 'fk to media',
-  `created` DATETIME,
+  `created` DATETIME NOT NULL COMMENT 'std. field',
   PRIMARY KEY (`id`)
 )
 ENGINE = InnoDB
