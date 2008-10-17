@@ -1,0 +1,45 @@
+<?= '<?xml version="1.0" encoding="UTF-8"?>' ?> 
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+	<channel>
+		<title>TableGeeks - All</title>
+		<link>http://tablegeeks.com/podcast</link>
+		<language>en-us</language>
+		<copyright>&#x2117; &amp; &#xA9; 2008 stm</copyright>
+		<itunes:subtitle>Podcasts of Miscellaneous Tabletop Gaming Sessions</itunes:subtitle>
+		<itunes:author>Various</itunes:author>
+		<itunes:summary>TableGeeks is a podcast that features role playing gamers playing their campaigns.</itunes:summary>
+		<description>TableGeeks is community submitted gaming sessions rolled into a handy podcast!</description>
+		<itunes:owner>
+			<itunes:name>stm</itunes:name>
+			<itunes:email>stm@tablegeeks.com</itunes:email>
+		</itunes:owner>
+		<itunes:image href="http://tablegeeks.com/img/tablegeekspodcasts.jpg" />
+		<itunes:category text="RPG">
+			<itunes:category text="Dungeons and Dragons"/>
+		</itunes:category>
+		<?php foreach($this->sessions as $session): ?>
+		<item>
+			<?php //TODO Add escaping and specific date formatting ?>
+			<title><?= $session->campaign->name ?> - <?= $session->date->toString( 'MMMM d, y' ) ?></title>
+
+			<itunes:author><?= $session->author->name ?></itunes:author>
+
+			<itunes:subtitle><?= $session->description ?></itunes:subtitle>
+
+			<itunes:summary><?= $session->synopsis ?></itunes:summary>
+
+			<?php // TODO create a url helper for converting the media path to a url ?>
+			<enclosure url="<?= $this->podcastUrl($session->media->path)?>" length="<?= $session->media->size ?>" type="<?= $session->media->mimetype ?>" />
+
+			<guid><?= $this->podcastUrl($session->media->path)?></guid>
+			<?php //TODO date format to Wed, 15 Jun 2005 19:00:00 GMT ?>
+			<pubDate><?= $session->addDate ?></pubDate>
+
+			<itunes:duration><?= $session->media->getDuration( Tg_Media::DURATION_TYPE_MINUTES ) ?></itunes:duration>
+
+			<itunes:tags><?= implode(', ',$session->tags) ?></itunes:tags>
+		</item>
+		<?php endforeach; ?>
+	</channel>
+</rss>
+ 
