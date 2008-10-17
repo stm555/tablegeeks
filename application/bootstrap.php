@@ -25,11 +25,22 @@ $frontController = Zend_Controller_Front::getInstance();
 // Point the front controller to your action controller directory. 
 $frontController->setControllerDirectory('../application/controllers'); 
  
-// Set the current environment 
-// Set a variable in the front controller indicating the current environment -- 
-// commonly one of development, staging, testing, production, but wholly 
-// dependent on your organization and site's needs. 
-$frontController->setParam('env', 'development');
+// ** Load and register Basic Configuration File **
+$config = new Zend_Config_Xml( dirname( __FILE__ ) . '/configs/tablegeeks.xml' );
+Zend_Registry::set( 'config', $config );
+
+// ** Initialize Logging
+
+$log = new Zend_Log( new Zend_Log_Writer_Firebug( ) );
+Zend_Registry::set( 'log', $log );
+
+// ** Load and register db access 
+//TODO make this detect backend and only set up when necessary
+$profiler = new Zend_Db_Profiler_Firebug( 'All DB Queries' );
+$db = Zend_Db::factory( $config->db->connection );
+$profiler->setEnabled( $config->db->profiler->enabled );
+$db->setProfiler( $profiler );
+Zend_Db_Table_Abstract::setDefaultAdapter( $db );
 
 $frontController->throwExceptions(true);
         

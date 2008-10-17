@@ -50,4 +50,12 @@ class Tg_Session
     * @var array
     **/
     public $tags = array();
+
+    /**
+     * Data access through table gateway pattern
+     * 
+     * @var Zend_Db_Table_Abstract
+     */
+    protected $_table;
+
 }

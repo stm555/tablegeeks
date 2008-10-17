@@ -11,7 +11,10 @@ class IndexController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        /* Default action for action controller */
+       require_once dirname( __file__ ) . '/../models/Session/Db/Mysql/Table.php';
+       $sessionTable = new Tg_Session_Db_MySql_Table(  );
+       Zend_Registry::get( 'log' )->debug( Zend_Debug::dump( $sessionTable->find( 1 )), 'Tuple from Session', false );
+
     }
 
 

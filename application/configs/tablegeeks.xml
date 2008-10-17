@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config>
+    <db>
+        <connection>
+            <adapter>pdo_mysql</adapter>
+            <params>
+                <host>localhost</host>
+                <dbname>tablegeeks</dbname>
+                <username>tablegeeks</username>
+                <password>geeks@tables</password>
+            </params>
+        </connection>
+        <profiler>
+            <enabled>true</enabled>
+        </profiler>
+    </db>
+</config>
