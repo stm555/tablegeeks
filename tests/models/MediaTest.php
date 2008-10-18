@@ -1,6 +1,6 @@
 <?php
 require_once( 'PHPUnit/Framework.php' );
-require_once( '../../application/models/Media.php' );
+require_once( dirname( __FILE__ ) . '/../../application/models/Media.php' );
 
 class MediaTest extends PHPUnit_Framework_TestCase
 {
