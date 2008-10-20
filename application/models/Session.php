@@ -1,5 +1,4 @@
 <?php
-require_once dirname( __FILE__ ) . '/../../library/Stm/MultiStorageModel/Abstract.php';
 require_once 'User.php';
 require_once 'Campaign.php';
 require_once 'Media.php';
@@ -9,8 +8,15 @@ require_once 'Media.php';
  * 
  * @author stm 
  */
-class Tg_Session extends Stm_MultiStorageModel_Abstract
+class Tg_Session 
 {
+    /**
+     * unique session id
+     * 
+     * @var integer
+     */
+    public $id;
+
     /**
     * Campaign that this session part of
     * @var Tg_Campaign
@@ -57,29 +63,30 @@ class Tg_Session extends Stm_MultiStorageModel_Abstract
      * 
      * @var Zend_Db_Table_Abstract
      */
-    protected $_table;
+    protected $_sessionTable;
 
-    public function getStorageAdapter( )
+    private function _getSessionTable(  )
     {
-        switch ( $this->_storageType )
+        if ( is_null( $this->_sessionTable ) )
         {
-            case self::STORAGE_DB:
-                return $this->_getTable( );
-            case null:
-                throw new Exception ( 'Storage Type Not Set' );
-            default:
-                throw new Exception ( 'Unsupported Storage Type Set' );
+            require_once ( dirname( __FILE__ ) . '/Session/Db/MySql/SessionTable.php');
+            $this->_sessionTable = new Tg_Session_Db_MySql_SessionTable(  );
         }
+        return $this->_sessionTable;
     }
 
-    private function _getTable(  )
+    //Static methods
+    public static function fetch( $id )
     {
-        if ( is_null( $this->_table ) )
-        {
-            require_once ( dirname( __FILE__ ) . '/Session/Db/MySql/Table.php');
-            $this->_table = new Tg_Session_Db_MySql_Table(  );
-        }
-        return $this->_table;
-    }
+        $session = new Tg_Session( );
+        $sessionTable = $session->_getSessionTable(  );
+        $rowset = $sessionTable->find( $id );
+        $row = $rowset->current( );
+        $session->id = $row->id;
+        $session->description = $row->description;
+        $session->synopsis = $row->synopsis;
+        $session->date = new Zend_Date( $row->date );
 
+        return $session;
+    }
 }

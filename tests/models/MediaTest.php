@@ -1,9 +1,49 @@
 <?php
+require_once( dirname( __FILE__ ) . '/../TestHelper.php' );
+require_once( Zend_Registry::get( 'testBootstrap' ) );
 require_once( 'PHPUnit/Framework.php' );
-require_once( dirname( __FILE__ ) . '/../../application/models/Media.php' );
+require_once( 'Media.php' );
 
 class MediaTest extends PHPUnit_Framework_TestCase
 {
+    private $dbUser = 'tablegeeks';
+    private $dbPw = 'geeks@tables';
+    private $dbName = 'tablegeeks';
+
+    public function setUp(  )
+    {
+        //load database with test data
+        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.build.sql" );
+    }
+    public function tearDown(  )
+    {
+        //empty out all tables
+        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.destroy.sql" );
+    }
+
+    public function testFetchGetsMedia(  )
+    {
+        $media = Tg_Media::fetch( 1 );
+
+        $this->assertType( 'Tg_Media', $media );
+
+    }
+    
+    public function testFetchGetsMediaById(  ) {
+        $mediaId = 1;
+        $mediaPath = '12345.m4a';
+        $mediaSize = 3000000;
+        $mediaMimeType = 'audio/x-m4a'; 
+        $mediaDuration = 360000;
+
+        $media = Tg_Media::fetch( $mediaId );
+        
+        $this->assertEquals($mediaId, $media->id );
+        $this->assertEquals( $mediaPath, $media->path );
+        $this->assertEquals( $mediaSize, $media->size );
+        $this->assertEquals( $mediaMimeType, $media->mimetype );
+        $this->assertEquals( $mediaDuration, $media->duration );
+    }
 
     public function testGetDurationSeconds( )
     {

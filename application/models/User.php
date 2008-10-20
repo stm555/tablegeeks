@@ -8,6 +8,13 @@
 class Tg_User
 {
     /**
+     * unique user id
+     * 
+     * @var integer
+     */
+    public $id;
+
+    /**
      * User's common name 
      * 
      * @var string

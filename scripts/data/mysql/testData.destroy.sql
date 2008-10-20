@@ -1,0 +1,4 @@
+TRUNCATE TABLE sessions;
+TRUNCATE TABLE users;
+TRUNCATE TABLE media;
+TRUNCATE TABLE campaigns;

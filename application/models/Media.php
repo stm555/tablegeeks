@@ -12,6 +12,13 @@ class Tg_Media
     const DURATION_TYPE_HOURS = 2;
 
     /**
+     * unique media id
+     * 
+     * @var integer
+     */
+    public $id;
+
+    /**
      * local relative path to media file
      * 
      * @var string
@@ -35,6 +42,38 @@ class Tg_Media
      * @var int
      */
     public $duration = 0;
+    /**
+     * Data access through table gateway pattern
+     * 
+     * @var Zend_Db_Table_Abstract
+     */
+    protected $_mediaTable;
+
+    private function _getMediaTable(  )
+    {
+        if ( is_null( $this->_mediaTable ) )
+        {
+            require_once ( dirname( __FILE__ ) . '/Media/Db/MySql/MediaTable.php');
+            $this->_mediaTable = new Tg_Media_Db_MySql_MediaTable(  );
+        }
+        return $this->_mediaTable;
+    }
+
+    //Static methods
+    public static function fetch( $id )
+    {
+        $media = new Tg_Media( );
+        $mediaTable = $media->_getMediaTable(  );
+        $rowset = $mediaTable->find( $id );
+        $row = $rowset->current( );
+        $media->id = $row->id;
+        $media->path = $row->path;
+        $media->size = $row->size;
+        $media->mimetype = $row->mimetype;
+        $media->duration = $row->duration;
+
+        return $media;
+    }
 
     /**
      * getDuration returns a string formatted duration based on the unit 
