@@ -35,7 +35,6 @@ $log = new Zend_Log( new Zend_Log_Writer_Firebug( ) );
 Zend_Registry::set( 'log', $log );
 
 // ** Load and register db access 
-//TODO make this detect backend and only set up when necessary
 $profiler = new Zend_Db_Profiler_Firebug( 'All DB Queries' );
 $db = Zend_Db::factory( $config->db->connection );
 $profiler->setEnabled( $config->db->profiler->enabled );

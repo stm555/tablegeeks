@@ -1,13 +1,12 @@
 <?php
-//ini_set( 'include_path', '../../library' . DIRECTORY_SEPARATOR . ini_get( 'include_path' ));
-//require_once 'Zend/Test/PHPUnit/ControllerTestCase.php';
+require dirname( __FILE__ ) . '/../TestHelper.php';
 $bootstrap = true;
-require '../../application/bootstrap.php';
+require dirname( __FILE__ ) . '/../../application/bootstrap.php';
 class podcastControlerTest extends Zend_Test_PHPUnit_ControllerTestCase
 {
     public function setUp(  )
     {
-        $this->bootstrap = '../../application/bootstrap.php';
+        $this->bootstrap = dirname( __FILE__ ) . '/../../application/bootstrap.php';
         parent::setUp(  );
     }
 

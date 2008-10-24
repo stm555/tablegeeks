@@ -65,6 +65,13 @@ class Tg_Session
      */
     protected $_sessionTable;
 
+    /**
+     * Data access through table gateway pattern for tags
+     * 
+     * @var Zend_Db_Table_Abstract
+     */
+    protected $_tagTable;
+
     private function _getSessionTable(  )
     {
         if ( is_null( $this->_sessionTable ) )
@@ -75,18 +82,74 @@ class Tg_Session
         return $this->_sessionTable;
     }
 
+    private function _getTagTable(  ) {
+        if ( is_null( $this->_tagTable ) )
+        {
+            require_once ( dirname( __FILE__ ) . '/Tag/Db/MySql/TagTable.php');
+            $this->_tagTable = new Tg_Tag_Db_MySql_TagTable(  );
+        }
+        return $this->_tagTable;
+    }
+
+    private function _loadFromRow( Zend_Db_Table_Row $row )
+    {
+        $this->id = $row->id;
+        $this->description = $row->description;
+        $this->synopsis = $row->synopsis;
+        $this->date = new Zend_Date( $row->date );
+        $this->campaign = Tg_Campaign::fetch( $row->campaign );
+        $this->author = Tg_User::fetch( $row->author );
+        $this->media = Tg_Media::fetch( $row->media );
+        $this->_populateTags( );
+    }
+
+    private function _populateTags(  )
+    {
+       $tagTable = $this->_getTagTable(  );
+       $select = $tagTable->select()
+                          ->setIntegrityCheck(false)
+                          ->from( $tagTable, 'tag' )
+                          ->joinInner( 'tags_xref', 'tags.id = tags_xref.tag', array( ) )
+                          ->where( "tags_xref.type = ?", Tg_Tag_Db_MySql_TagTable::TYPE_SESSION )
+                          ->where( "tags_xref.entity = ?", $this->id );
+       Zend_Registry::get( 'log' )->debug( $select->assemble() );
+       $this->tags = $tagTable->getAdapter( )->fetchCol( $select );   
+    }
+
     //Static methods
+    /**
+     * fetch a gaming session by id
+     * 
+     * @param integer $id 
+     * @return Tg_Session
+     */
     public static function fetch( $id )
     {
         $session = new Tg_Session( );
         $sessionTable = $session->_getSessionTable(  );
         $rowset = $sessionTable->find( $id );
-        $row = $rowset->current( );
-        $session->id = $row->id;
-        $session->description = $row->description;
-        $session->synopsis = $row->synopsis;
-        $session->date = new Zend_Date( $row->date );
+        $session->_loadFromRow( $rowset->current( ) );
 
         return $session;
+    }
+
+    /**
+     * Gets all gaming sessions and returns them in an array
+     * 
+     * @return array
+     */
+    public static function fetchAll(  )
+    {
+        $session = new Tg_Session( );
+        $sessionTable = $session->_getSessionTable(  );
+        $rowset = $sessionTable->fetchAll( );
+        $sessions = array( );
+        foreach( $rowset as $row )
+        {
+            $session = new Tg_Session(  );
+            $session->_loadFromRow( $row );
+            $sessions[] = $session;
+        }
+        return $sessions;
     }
 }
