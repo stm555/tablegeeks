@@ -15,11 +15,6 @@ error_reporting( E_ALL | E_STRICT );
 ini_set('memory_limit', -1);
 
 /*
- * Set default timezone
- */
-date_default_timezone_set('US/CENTRAL');
-
-/*
  * Determine the root, library, tests, and models directories
  */
 $root        = realpath(dirname(__FILE__) . '/../');

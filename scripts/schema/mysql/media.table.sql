@@ -1,5 +1,5 @@
 CREATE TABLE `tablegeeks`.`media` (
-  `id` INT UNSIGNED NOT NULL,
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `path` VARCHAR(512) NOT NULL,
   `size` INT UNSIGNED DEFAULT NULL,
   `mimetype` VARCHAR(50) DEFAULT NULL COMMENT 'Mimetype of media file',
