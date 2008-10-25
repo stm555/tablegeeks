@@ -1,5 +1,4 @@
 <?php
-define( BASE_PATH, dirname( __FILE__ ));
 class bruteDbBuilder {
 
     const MYSQL_CLIENT = '~/bin/mysql';
@@ -31,11 +30,11 @@ class bruteDbBuilder {
     }
 
     public function createDb(  ) {
-        $this->execFile( self::ADMIN_UN, self::ADMIN_PW, BASE_PATH . '/schema/mysql/tablegeeks.schema.sql' );
+        $this->execFile( self::ADMIN_UN, self::ADMIN_PW, dirname(__FILE__) . '/schema/mysql/tablegeeks.schema.sql' );
     }
 
     public function createTables(  ) {
-        $tableDefinitions = glob( realpath( BASE_PATH ) . '/schema/mysql/*.table.sql' );
+        $tableDefinitions = glob( realpath( dirname(__FILE__) ) . '/schema/mysql/*.table.sql' );
         foreach ( $tableDefinitions as $tableDef )
         {
            $this->execFile( self::TG_UN, self::TG_PW, $tableDef, self::DB_NAME ); 
@@ -44,7 +43,7 @@ class bruteDbBuilder {
     }
 
     private function createForeignkeys(  ) {
-        $fkDefinitions = glob( realpath( BASE_PATH ) . '/schema/mysql/*.fk.sql' );
+        $fkDefinitions = glob( realpath( dirname(__FILE__) ) . '/schema/mysql/*.fk.sql' );
         foreach ( $fkDefinitions as $fkDef )
         {
            $this->execFile( self::TG_UN, self::TG_PW, $fkDef, self::DB_NAME ); 
@@ -53,7 +52,7 @@ class bruteDbBuilder {
     }
 
     public function loadTestData(  ) {
-        $this->execFile( self::TG_UN, self::TG_PW, BASE_PATH . '/data/mysql/testData.build.sql', self::DB_NAME );
+        $this->execFile( self::TG_UN, self::TG_PW, dirname(__FILE__) . '/data/mysql/testData.build.sql', self::DB_NAME );
     }
 }
 
