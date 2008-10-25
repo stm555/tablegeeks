@@ -6,31 +6,38 @@ require_once( Zend_Registry::get( 'testBootstrap' ) );
 
 class UserTest extends PHPUnit_Framework_TestCase
 {
-    private $dbUser = 'tablegeeks';
-    private $dbPw = 'geeks@tables';
-    private $dbName = 'tablegeeks';
     
     public function setUp(  )
     {
         //load database with test data
-        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.build.sql" );
     }
     public function tearDown(  )
     {
-        //empty out all tables
-        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.destroy.sql" );
+        //empty out all test data
+    }
+
+    public function testFetchNonExistantThrowsException(  )
+    {
+        try {
+            $user = Tg_User::fetch( 99999999 );
+        }
+        catch ( Exception $e ) {
+            return; //exception thrown, pass
+        }
+
+        $this->fail(  ); //exception not thrown, fail
     }
 
     public function testFetchGetsAUser(  )
     {
-        $user = Tg_User::fetch( 1 );
+        $user = Tg_User::fetch( 9999 );
 
         $this->assertType( 'Tg_User', $user );
 
     }
     
     public function testFetchGetsUserById(  ) {
-        $userId = 1;
+        $userId = 9999;
         $userName = 'stm';
 
         $user = Tg_User::fetch( $userId );

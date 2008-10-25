@@ -12,31 +12,37 @@ require_once( Zend_Registry::get( 'testBootstrap' ) );
  */
 class SessionTest extends PHPUnit_Framework_TestCase
 {
-    private $dbUser = 'tablegeeks';
-    private $dbPw = 'geeks@tables';
-    private $dbName = 'tablegeeks';
-    
     public function setUp(  )
     {
         //load database with test data
-        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.build.sql" );
     }
     public function tearDown(  )
     {
-        //empty out all tables
-        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.destroy.sql" );
+        //empty out all test data
+    }
+
+    public function testFetchNonExistantThrowsException(  )
+    {
+        try {
+            $session = Tg_Session::fetch( 999999 );
+        }
+        catch ( Exception $e )
+        {
+            return; //exception thrown, pass
+        }
+        $this->fail(  ); //exception not thrown, fail
     }
 
     public function testFetchGetsAGamingSession(  )
     {
-        $session = Tg_Session::fetch( 1 );
+        $session = Tg_Session::fetch( 9999 );
 
         $this->assertType( 'Tg_Session', $session );
 
     }
     
     public function testFetchGetsGamingSessionByIdShouldHavePrimitiveValues(  ) {
-        $sessionId = 1;
+        $sessionId = 9999;
 
         $session = Tg_Session::fetch( $sessionId );
         
@@ -47,18 +53,18 @@ class SessionTest extends PHPUnit_Framework_TestCase
     }
 
     public function testFetchGetsGamingSessionByIdShouldHaveCampaign(  ) {
-        $sessionId = 1;
+        $sessionId = 9999;
         $campaign = new Tg_Campaign( );
-        $campaign->id = 1;
+        $campaign->id = 9999;
         $campaign->name = "Grand Campaign";
         $session = Tg_Session::fetch( $sessionId );
         $this->assertEquals( get_object_vars( $campaign ), get_object_vars( $session->campaign ) );
     }
     
     public function testFetchGetsGamingSessionByIdShouldHaveMedia(  ) {
-        $sessionId = 1;
+        $sessionId = 9999;
         $media = new Tg_Media(  );
-        $media->id = 1;
+        $media->id = 9999;
         $media->path = "12345.m4a";
         $media->size = 3000000;
         $media->mimetype = 'audio/x-m4a';
@@ -68,9 +74,9 @@ class SessionTest extends PHPUnit_Framework_TestCase
     }
     
     public function testFetchGetsGamingSessionByIdShouldHaveAuthor(  ) {
-        $sessionId = 1;
+        $sessionId = 9999;
         $user = new Tg_User(  );
-        $user->id = 1;
+        $user->id = 9999;
         $user->name = 'stm';
         $session = Tg_Session::fetch( $sessionId );
         $this->assertEquals( get_object_vars( $user ), get_object_vars( $session->author ) );
@@ -78,7 +84,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
 
     public function testFetchGetsGamingSessionByIdShouldHaveTags(  ) {
 
-        $sessionId = 1;
+        $sessionId = 9999;
         $session = Tg_Session::fetch( $sessionId );
         $this->assertContains( 'grand', $session->tags );
     }
@@ -90,7 +96,7 @@ class SessionTest extends PHPUnit_Framework_TestCase
     }
 
     public function testFetchAllShouldGetTestSession(  ) {
-        $sessionId = 1;
+        $sessionId = 9999;
         $sessions = Tg_Session::fetchAll(  );
         $this->assertEquals( $sessionId, $sessions[0]->id );
     }

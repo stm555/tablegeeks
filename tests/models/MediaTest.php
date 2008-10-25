@@ -6,31 +6,38 @@ require_once( 'Media.php' );
 
 class MediaTest extends PHPUnit_Framework_TestCase
 {
-    private $dbUser = 'tablegeeks';
-    private $dbPw = 'geeks@tables';
-    private $dbName = 'tablegeeks';
 
     public function setUp(  )
     {
         //load database with test data
-        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.build.sql" );
     }
     public function tearDown(  )
     {
-        //empty out all tables
-        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.destroy.sql" );
+        //empty out all test data
+    }
+
+    public function testFetchNonExistantThrowsException(  )
+    {
+        try {
+            $media = Tg_Media::fetch( 99999999 );
+        }
+        catch ( Exception $e ) {
+            return; //exception thrown, pass
+        }
+
+        $this->fail(  ); //exception not thrown, fail
     }
 
     public function testFetchGetsMedia(  )
     {
-        $media = Tg_Media::fetch( 1 );
+        $media = Tg_Media::fetch( 9999 );
 
         $this->assertType( 'Tg_Media', $media );
 
     }
     
     public function testFetchGetsMediaById(  ) {
-        $mediaId = 1;
+        $mediaId = 9999;
         $mediaPath = '12345.m4a';
         $mediaSize = 3000000;
         $mediaMimeType = 'audio/x-m4a'; 

@@ -6,31 +6,37 @@ require_once( Zend_Registry::get( 'testBootstrap' ) );
 
 class CampaignTest extends PHPUnit_Framework_TestCase
 {
-    private $dbUser = 'tablegeeks';
-    private $dbPw = 'geeks@tables';
-    private $dbName = 'tablegeeks';
-    
     public function setUp(  )
     {
         //load database with test data
-        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.build.sql" );
     }
     public function tearDown(  )
     {
-        //empty out all tables
-        exec( "mysql5 -u {$this->dbUser} -p {$this->dbPw} {$this->dbName} < " . Zend_Registry::get( 'testRoot' ) . "/scripts/data/mysql/testData.destroy.sql" );
+        //remove test data
     }
 
     public function testFetchGetsAGamingCampaign(  )
     {
-        $campaign = Tg_Campaign::fetch( 1 );
+        $campaign = Tg_Campaign::fetch( 9999 );
 
         $this->assertType( 'Tg_Campaign', $campaign );
 
     }
+
+    public function testFetchThrowsExceptionOnNonExistantGamingSession(  )
+    {
+        try {
+            $campaign = Tg_Campaign::fetch( 99999999 );
+        }
+        catch ( Exception $e ) {
+            return; //exception thrown, pass
+        }
+        
+        $this->fail(  ); //exception not thrown, fail
+    }
     
     public function testFetchGetsGamingCampaignById(  ) {
-        $campaignId = 1;
+        $campaignId = 9999;
         $campaignName = 'Grand Campaign';
 
         $campaign = Tg_Campaign::fetch( $campaignId );
