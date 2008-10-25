@@ -39,6 +39,7 @@ $profiler = new Zend_Db_Profiler_Firebug( 'All DB Queries' );
 $db = Zend_Db::factory( $config->db->connection );
 $profiler->setEnabled( $config->db->profiler->enabled );
 $db->setProfiler( $profiler );
+Zend_Registry::set( 'db', $db );
 Zend_Db_Table_Abstract::setDefaultAdapter( $db );
 
 $frontController->throwExceptions(true);
