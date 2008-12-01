@@ -38,10 +38,17 @@ class Tg_User
         return $this->_userTable;
     }
 
+    public function save() {
+       //TODO implement this 
+    }
+
     //Static methods
-    public static function fetch( $id )
+    public static function fetch( $id = null )
     {
         $user = new Tg_User( );
+        if ( is_null($id) ) {
+            return $user;
+        }
         $userTable = $user->_getUserTable(  );
         $rowset = $userTable->find( $id );
         $row = $rowset->current( );
@@ -50,5 +57,4 @@ class Tg_User
 
         return $user;
     }
-
 }

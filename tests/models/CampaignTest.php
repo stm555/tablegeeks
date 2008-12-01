@@ -44,4 +44,14 @@ class CampaignTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($campaignId, $campaign->id );
         $this->assertEquals( $campaignName, $campaign->name );
     }
+    
+    public function testSaveShouldPersistData() {
+        $campaign = Tg_Campaign::fetch( );
+        $campaign->name = "Some Campaign!";
+        $campaign->save();
+        
+        $fetchedCampaign = Tg_Campaign::fetch( $campaign->id );
+        $this->assertEquals($campaign->id, $fetchedCampaign->id);
+        $this->assertEquals($campaign->name, $fetchedCampaign->name);
+    }
 }

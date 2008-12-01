@@ -1,4 +1,7 @@
-<?php 
+<?php
+//define the application path for use later
+define('APPLICATION_PATH', dirname(__FILE__));
+
 // ** Check to see if the environment is already setup **
 if (isset($bootstrap) && $bootstrap) { 
     // Enable all errors so we'll know when something goes wrong. 
@@ -8,7 +11,7 @@ if (isset($bootstrap) && $bootstrap) {
  
     // Add our {{library}} directory to the include path so that PHP can find the Zend Framework classes.
     // you may wish to add other paths here, or keep system paths: set_include_path('../library' . PATH_SEPARATOR . get_include_path() 
-    set_include_path('../library' . PATH_SEPARATOR . realpath(dirname(__FILE__).'/../') . PATH_SEPARATOR . get_include_path());  
+    set_include_path(APPLICATION_PATH . '/models' . PATH_SEPARATOR . APPLICATION_PATH . '/../library' . PATH_SEPARATOR . get_include_path());  
  
     // Set up autoload. 
     // This is a nifty trick that allows ZF to load classes automatically so that you don't have to litter your 
@@ -23,10 +26,21 @@ if (isset($bootstrap) && $bootstrap) {
 $frontController = Zend_Controller_Front::getInstance(); 
  
 // Point the front controller to your action controller directory. 
-$frontController->setControllerDirectory('../application/controllers'); 
- 
+$frontController->setControllerDirectory(APPLICATION_PATH . '/controllers');
+
+// Set up Layout
+Zend_Layout::startMvc(APPLICATION_PATH . '/views/layouts');
+// Set default doctype
+$view = Zend_Layout::getMvcInstance()->getView();
+$view->doctype('XHTML1_STRICT');
+$view->headLink()->appendStylesheet('/style/default_layout.css');
+$view->addHelperPath(APPLICATION_PATH . '/views/helpers','Tg_View_Helper');
+//remove $view from global
+unset($view);
+
+
 // ** Load and register Basic Configuration File **
-$config = new Zend_Config_Xml( dirname( __FILE__ ) . '/configs/tablegeeks.xml' );
+$config = new Zend_Config_Xml( APPLICATION_PATH . '/configs/tablegeeks.xml' );
 Zend_Registry::set( 'config', $config );
 
 // ** Initialize Logging

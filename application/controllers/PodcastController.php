@@ -1,5 +1,5 @@
 <?php
-require_once 'application/models/Session.php';
+require_once 'Session.php';
 /**
  * PodcastController 
  * 
@@ -23,11 +23,9 @@ class PodcastController extends Zend_Controller_Action
         $log = Zend_Registry::get( 'log' );
         $log->info( 'index action of Podcast controller' );
         $sessions = Tg_Session::fetchAll(  );
-		//FIXME need to use a project defined base path here ..
-		$viewHelpersPath = realpath(dirname(__FILE__) . '/../views/helpers');
-		$this->view->addHelperPath($viewHelpersPath,'Tg_View_Helper');
-		$this->view->sessions = $sessions;
-		$this->_helper->viewRenderer->setViewSuffix('pxml');
+	$this->view->sessions = $sessions;
+	$this->_helper->layout->disableLayout();
+	$this->_helper->viewRenderer->setViewSuffix('pxml');
     }
 
 }

@@ -48,6 +48,13 @@ class Tg_Media
      * @var Zend_Db_Table_Abstract
      */
     protected $_mediaTable;
+    
+    /**
+     * Form
+     *
+     * @var Zend_Form
+     */
+    protected $_mediaForm;
 
     private function _getMediaTable(  )
     {
@@ -60,9 +67,12 @@ class Tg_Media
     }
 
     //Static methods
-    public static function fetch( $id )
+    public static function fetch( $id = null )
     {
         $media = new Tg_Media( );
+        if ( is_null( $id ) ) {
+            return $media;
+        }
         $mediaTable = $media->_getMediaTable(  );
         $rowset = $mediaTable->find( $id );
         $row = $rowset->current( );
@@ -98,5 +108,43 @@ class Tg_Media
                 throw new Exception( 'Invalid duration unit' );
         }
 
+    }
+    
+    //todo update this form to use a file upload field
+    public function getForm( $includeSubmit = false) {
+        if ($this->_mediaForm instanceof Zend_Form) {
+            $form = $this->_mediaForm;
+        } else {
+            $form = new Zend_Form();
+            $form->setIsArray(true);
+            $form->addElement('hidden', 'id');
+            $form->addElement('text','name', array('label' => 'media'));
+            
+            $this->_mediaForm = $form;
+            $this->_populateForm();
+            $form = $this->_mediaForm;
+        }
+        
+        if ($includeSubmit) {
+            $form->addElement('submit', 'submit');
+        }
+        
+        return $form;
+    }
+    //TODO update this form as appropriate
+    private function _populateForm() {
+        //initialize object form if necessary
+        if (is_null($this->_mediaForm)) {
+            $this->getForm();
+            return;
+        }
+        if (!is_null($this->id)) {
+            $this->_mediaForm->id->setValue($this->id);
+            $this->_mediaForm->name->setValue($this->name);
+        }
+    }
+    
+    //TODO implement this
+    public function save() {
     }
 }
