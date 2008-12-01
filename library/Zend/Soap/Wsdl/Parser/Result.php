@@ -16,7 +16,7 @@
  * @package    Zend_Soap
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Result.php 11815 2008-10-10 02:50:19Z yoshida@zend.co.jp $
+ * @version    $Id: Result.php 11560 2008-10-01 10:09:10Z yoshida@zend.co.jp $
  */
 
 /**

@@ -28,7 +28,7 @@ require_once 'Zend/Validate/Interface.php';
  * @package    Zend_Form
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Form.php 11817 2008-10-10 04:24:20Z yoshida@zend.co.jp $
+ * @version    $Id: Form.php 12787 2008-11-23 14:17:44Z matthew $
  */
 class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
 {
@@ -2322,8 +2322,7 @@ class Zend_Form implements Iterator, Countable, Zend_Validate_Interface
         if (null === $options) {
             $decorator = new $class;
         } else {
-            $r = new ReflectionClass($class);
-            $decorator = $r->newInstance($options);
+            $decorator = new $class($options);
         }
 
         return $decorator;

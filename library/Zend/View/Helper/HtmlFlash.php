@@ -17,7 +17,7 @@
  * @subpackage Helper
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: HtmlFlash.php 11524 2008-09-26 18:36:44Z norm2782 $
+ * @version    $Id: HtmlFlash.php 11525 2008-09-26 18:40:19Z norm2782 $
  */
 
 /**

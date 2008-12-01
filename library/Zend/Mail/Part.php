@@ -16,7 +16,7 @@
  * @package    Zend_Mail
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Part.php 11815 2008-10-10 02:50:19Z yoshida@zend.co.jp $
+ * @version    $Id: Part.php 12519 2008-11-10 18:41:24Z alexander $
  */
 
 
@@ -189,7 +189,7 @@ class Zend_Mail_Part implements RecursiveIterator, Zend_Mail_Part_Interface
      * @return int size
      */
     public function getSize() {
-    	return strlen($this->getContent());
+        return strlen($this->getContent());
     }
 
 
@@ -221,7 +221,7 @@ class Zend_Mail_Part implements RecursiveIterator, Zend_Mail_Part_Interface
         }
         $parts = Zend_Mime_Decode::splitMessageStruct($this->_content, $boundary);
         if ($parts === null) {
-        	return;
+            return;
         }
         $counter = 1;
         foreach ($parts as $part) {
@@ -382,7 +382,7 @@ class Zend_Mail_Part implements RecursiveIterator, Zend_Mail_Part_Interface
      * @throws Zend_Exception, Zend_Mail_Exception
      */
     public function getHeaderField($name, $wantedPart = 0, $firstName = 0) {
-    	return Zend_Mime_Decode::splitHeaderField(current($this->getHeader($name, 'array')), $wantedPart, $firstName);
+        return Zend_Mime_Decode::splitHeaderField(current($this->getHeader($name, 'array')), $wantedPart, $firstName);
     }
 
 

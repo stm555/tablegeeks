@@ -16,7 +16,7 @@
  * @package   Zend_Config
  * @copyright Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Xml.php 11428 2008-09-18 16:14:39Z doctorrock83 $
+ * @version   $Id: Xml.php 11427 2008-09-18 16:11:43Z doctorrock83 $
  */
 
 /**

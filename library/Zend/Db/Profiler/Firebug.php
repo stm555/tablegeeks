@@ -44,7 +44,7 @@ class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
      * @var string
      */
     protected $_label = null;
-  
+    
     /**
      * The label template for this profiler
      * @var string
@@ -124,7 +124,7 @@ class Zend_Db_Profiler_Firebug extends Zend_Db_Profiler
         if (!$this->getEnabled()) {
             return;
         }
-        
+
         $this->_message->setDestroy(false);
 
         $profile = $this->getQueryProfile($queryId);

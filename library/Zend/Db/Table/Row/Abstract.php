@@ -37,7 +37,7 @@ require_once 'Zend/Loader.php';
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
-abstract class Zend_Db_Table_Row_Abstract
+abstract class Zend_Db_Table_Row_Abstract implements ArrayAccess
 {
 
     /**
@@ -236,6 +236,52 @@ abstract class Zend_Db_Table_Row_Abstract
     {
         $this->_connected = false;
     }
+
+    /**
+     * Proxy to __isset
+     * Required by the ArrayAccess implementation
+     *
+     * @param string $offset
+     * @return boolean
+     */
+    public function offsetExists($offset)
+    {
+        return $this->__isset($offset);
+    }
+
+    /**
+     * Proxy to __get
+     * Required by the ArrayAccess implementation
+     *
+     * @param string $offset
+     * @return string
+     */
+     public function offsetGet($offset)
+     {
+         return $this->__get($offset);
+     }
+
+     /**
+      * Proxy to __set
+      * Required by the ArrayAccess implementation
+      *
+      * @param string $offset
+      * @param mixed $value
+      */
+     public function offsetSet($offset, $value)
+     {
+         $this->__set($offset, $value);
+     }
+
+     /**
+      * Does nothing
+      * Required by the ArrayAccess implementation
+      *
+      * @param string $offset
+      */
+     public function offsetUnset($offset)
+     {
+     }
 
     /**
      * Initialize object
@@ -540,7 +586,7 @@ abstract class Zend_Db_Table_Row_Abstract
             require_once 'Zend/Db/Table/Row/Exception.php';
             throw new Zend_Db_Table_Row_Exception('This row has been marked read-only');
         }
-        
+
         $where = $this->_getWhereQuery();
 
         /**
@@ -606,6 +652,8 @@ abstract class Zend_Db_Table_Row_Abstract
      */
     public function setFromArray(array $data)
     {
+        $data = array_intersect_key($data, $this->_data);
+
         foreach ($data as $columnName => $value) {
             $this->__set($columnName, $value);
         }
@@ -982,7 +1030,6 @@ abstract class Zend_Db_Table_Row_Abstract
             $value = $this->_data[$callerColumnName];
             $interColumnName = $interDb->foldCase($callerMap[Zend_Db_Table_Abstract::COLUMNS][$i]);
             $interCol = $interDb->quoteIdentifier("i.$interColumnName", true);
-            $matchColumnName = $interDb->foldCase($matchMap[Zend_Db_Table_Abstract::REF_COLUMNS][$i]);
             $interInfo = $intersectionTable->info();
             $type = $interInfo[Zend_Db_Table_Abstract::METADATA][$interColumnName]['DATA_TYPE'];
             $select->where($interDb->quoteInto("$interCol = ?", $value, $type));

@@ -17,7 +17,7 @@
  * @subpackage Zend_Controller_Action_Helper
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: ActionStack.php 11510 2008-09-24 15:51:04Z doctorrock83 $
+ * @version    $Id: ActionStack.php 11493 2008-09-23 14:25:11Z doctorrock83 $
  */
 
 /**

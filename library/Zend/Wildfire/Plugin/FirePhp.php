@@ -256,7 +256,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
     {
         return $this->_enabled;
     }
-            
+    
     /**
      * Starts a group in the Firebug Console
      * 
@@ -389,13 +389,13 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
                                                         'data'=>$var));
           
         } else {
-          
+
           $meta = array('Type'=>$style);
  
           if ($label!=null) {
               $meta['Label'] = $label;
           }
-          
+
           return self::$_instance->_recordMessage(self::STRUCTURE_URI_FIREBUGCONSOLE,
                                                   array('data'=>$var,
                                                         'meta'=>$meta));
@@ -453,7 +453,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
         }
         return false;      
     }
-
+    
     /**
      * Encode an object by generating an array containing all object members.
      * 
@@ -467,6 +467,11 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
     {
         $return = array();
         
+        if (is_resource($object)) {
+    
+            return '** '.(string)$object.' **';
+    
+        } else    
         if (is_object($object)) {
 
             if ($depth > $this->_maxObjectDepth) {
@@ -508,7 +513,7 @@ class Zend_Wildfire_Plugin_FirePhp implements Zend_Wildfire_Plugin_Interface
                   $raw_name = "\0".'*'."\0".$raw_name;
               }
               
-              if (isset($members[$raw_name])
+              if (array_key_exists($raw_name,$members)
                   && !$property->isStatic()) {
                 
                   $return[$name] = $this->_encodeObject($members[$raw_name], $depth + 1);      

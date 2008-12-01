@@ -17,7 +17,7 @@
  * @subpackage Adapter
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Mysqli.php 9577 2008-05-31 01:50:27Z peptolab $
+ * @version    $Id: Mysqli.php 12842 2008-11-25 22:07:48Z mikaelkael $
  */
 
 
@@ -102,7 +102,8 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
     /**
      * Quote a raw string.
      *
-     * @param string $value     Raw string
+     * @param mixed $value Raw string
+     *
      * @return string           Quoted string
      */
     protected function _quote($value)
@@ -231,6 +232,10 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
                 $row['Length'] = $matches[2];
             } else if (preg_match('/^decimal\((\d+),(\d+)\)/', $row['Type'], $matches)) {
                 $row['Type'] = 'decimal';
+                $row['Precision'] = $matches[1];
+                $row['Scale'] = $matches[2];
+            } else if (preg_match('/^float\((\d+),(\d+)\)/', $row['Type'], $matches)) {
+                $row['Type'] = 'float';
                 $row['Precision'] = $matches[1];
                 $row['Scale'] = $matches[2];
             } else if (preg_match('/^((?:big|medium|small|tiny)?int)\((\d+)\)/', $row['Type'], $matches)) {
@@ -364,6 +369,7 @@ class Zend_Db_Adapter_Mysqli extends Zend_Db_Adapter_Abstract
      * @param string $tableName   OPTIONAL Name of table.
      * @param string $primaryKey  OPTIONAL Name of primary key column.
      * @return string
+     * @todo Return value should be int?
      */
     public function lastInsertId($tableName = null, $primaryKey = null)
     {

@@ -18,7 +18,7 @@
  * @subpackage Protocol
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Smtp.php 11817 2008-10-10 04:24:20Z yoshida@zend.co.jp $
+ * @version    $Id: Smtp.php 11196 2008-09-02 00:56:25Z yoshida@zend.co.jp $
  */
 
 

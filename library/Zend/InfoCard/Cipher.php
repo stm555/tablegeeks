@@ -17,7 +17,7 @@
  * @subpackage Zend_InfoCard_Cipher
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Cipher.php 11746 2008-10-08 18:33:39Z norm2782 $
+ * @version    $Id: Cipher.php 11747 2008-10-08 18:33:58Z norm2782 $
  */
 
 /**

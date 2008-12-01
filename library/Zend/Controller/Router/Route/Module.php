@@ -15,7 +15,7 @@
  * @package    Zend_Controller
  * @subpackage Router
  * @copyright  Copyright (c) 2005-2008 Zend Technologies USA Inc. (http://www.zend.com)
- * @version    $Id: Module.php 11510 2008-09-24 15:51:04Z doctorrock83 $
+ * @version    $Id: Module.php 12310 2008-11-05 20:49:16Z dasprid $
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -72,7 +72,7 @@ class Zend_Controller_Router_Route_Module extends Zend_Controller_Router_Route_A
     public function getVersion() {
         return 1;
     }
-    
+
     /**
      * Instantiates route based on passed Zend_Config structure
      */
@@ -168,7 +168,7 @@ class Zend_Controller_Router_Route_Module extends Zend_Controller_Router_Route_A
                 for ($i = 0; $i < $numSegs; $i = $i + 2) {
                     $key = urldecode($path[$i]);
                     $val = isset($path[$i + 1]) ? urldecode($path[$i + 1]) : null;
-                    $params[$key] = $val;
+                    $params[$key] = (isset($params[$key]) ? (array_merge((array) $params[$key], array($val))): $val);
                 }
             }
         }
@@ -219,9 +219,17 @@ class Zend_Controller_Router_Route_Module extends Zend_Controller_Router_Route_A
         unset($params[$this->_actionKey]);
 
         foreach ($params as $key => $value) {
-            if ($encode) $value = urlencode($value);
-            $url .= '/' . $key;
-            $url .= '/' . $value;
+            if (is_array($value)) {
+                foreach ($value as $arrayValue) {
+                    if ($encode) $arrayValue = urlencode($arrayValue);
+                    $url .= '/' . $key;
+                    $url .= '/' . $arrayValue;
+                }
+            } else {
+                if ($encode) $value = urlencode($value);
+                $url .= '/' . $key;
+                $url .= '/' . $value;
+            }
         }
 
         if (!empty($url) || $action !== $this->_defaults[$this->_actionKey]) {
